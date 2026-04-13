@@ -2,7 +2,7 @@
 
 const { connection, enableBlobSubtypeText = false } = require('../config.json');
 
-const Firebird = require(enableBlobSubtypeText ? 'node-firebird-dev' : 'node-firebird');
+const Firebird = require('node-firebird');
 
 const { database, host, port, pageSize = 4096 } = connection;
 const role = null;
@@ -76,7 +76,7 @@ async function readResults(results){
                 }
 
                 if(record[campo] && record[campo].buffer) {
-                    record[campo] = record[campo].toString('latin1');
+                    record[campo] = record[campo].toString('win1252');
                 }
             }
         }
