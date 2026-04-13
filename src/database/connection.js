@@ -1,10 +1,10 @@
 'use strict'; 
 
-const { connection, enableBlobSubtypeText = false } = require('../config.json');
+const { connection, textEncoding } = require('../config.json');
 
 const Firebird = require('node-firebird');
 
-const { database, host, port, pageSize = 4096 } = connection;
+const { database, host, port, pageSize = 4096, encoding = 'UTF8', blobAsText = false} = connection;
 const role = null;
 
 module.exports = {
@@ -47,7 +47,9 @@ async function doConnection() {
                 host,
                 port,
                 role,
-                pageSize
+                pageSize,
+                encoding,
+                blobAsText
             }, function (error, db) {
                 if (error) {
                     reject(error);
@@ -76,7 +78,7 @@ async function readResults(results){
                 }
 
                 if(record[campo] && record[campo].buffer) {
-                    record[campo] = record[campo].toString('win1252');
+                    record[campo] = record[campo].toString(textEncoding);
                 }
             }
         }
