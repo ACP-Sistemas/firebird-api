@@ -24,10 +24,12 @@ Você também precisa criar o arquivo `src/config.json` com a seguinte estrutura
         "database": "C:/dados/database.fdb",
         "host": "127.0.0.1",
         "port": 3050,
-        "pageSize": 4096
+        "pageSize": 4096,
+		"encoding": "UTF8",
+		"blobAsText": false 
     },
-    "secret": "minha_chave_secreta",
-    "enableBlobSubtypeText": false,
+	"textEncoding": "WIN1252",
+	"secret": "minha_chave_secreta",
     "cors": {
         "allowServerToServerAccess": false,
         "whitelist": ["meusite.com.br"]
@@ -39,8 +41,10 @@ Você também precisa criar o arquivo `src/config.json` com a seguinte estrutura
 * `connection.host`: A URL ou IP do servidor onde se encontra seu banco de dados.
 * `connection.port`: A porta do firebird no seu servidor.
 * `connection.pageSize`: *Opcional* Default `4096`. O pageSize ideal de acordo com seu banco e servidor.
+* `connection.encoding`: *Opcional* Default `UTF8`. A codificação da conexão do banco, como é usado em JSON, deve ser usado UTF-8 e convertido por textEncoding.
+* `connection.blobAsText`: *Opcional* Default `false`. **Recomendado false** Utilizando o padrão recomendado `false` a API conseguirá ler apenas campos BLOB do tipo binário (`BLOB SUB_TYPE 0 Binary`). Esta opção é recomendada porque a comunidade `node-firebird` ainda não conseguiu ler campos BLOB do tipo texto (`BLOB SUB_TYPE 1 Text`) com segurança. [Veja aqui](https://github.com/hgourvest/node-firebird/issues/51#issuecomment-389193669) a issue ainda aberta no github sobre este problema, onde propus uma solução temporária de utilizarmos apenas campos BLOB do tipo binário, como essa opção faz por default. Caso você não tenha acesso ou não seja possível alterar o seus campos BLOB para tipo binário, faça testes habilitando essa opção para `true`, assim a API conseguirá ler automaticamente campos `BLOB SUB_TYPE 1 Text`. Essa opção não é recomendada pois para isso internamente é usado um fork do pacote `node-firebird` oficial, chamado `node-firebird-dev` que consegue contornar alguns problemas e ler esse tipo de blob. Porém esse pacote não recebe frequentes atualizações e pode trazer outros problemas . Habilite essa opção apenas se você tiver certeza do que está fazendo.
+* `textEncoding`: *Opcional* Default `WIN1252`. A codificação de conversão de texto do banco, 
 * `secret`: A chave secreta que foi utilizada para gerar o token JWT
-* `enableBlobSubtypeText`: *Opcional* Default `false`. **Recomendado false** Utilizando o padrão recomendado `false` a API conseguirá ler apenas campos BLOB do tipo binário (`BLOB SUB_TYPE 0 Binary`). Esta opção é recomendada porque a comunidade `node-firebird` ainda não conseguiu ler campos BLOB do tipo texto (`BLOB SUB_TYPE 1 Text`) com segurança. [Veja aqui](https://github.com/hgourvest/node-firebird/issues/51#issuecomment-389193669) a issue ainda aberta no github sobre este problema, onde propus uma solução temporária de utilizarmos apenas campos BLOB do tipo binário, como essa opção faz por default. Caso você não tenha acesso ou não seja possível alterar o seus campos BLOB para tipo binário, faça testes habilitando essa opção para `true`, assim a API conseguirá ler automaticamente campos `BLOB SUB_TYPE 1 Text`. Essa opção não é recomendada pois para isso internamente é usado um fork do pacote `node-firebird` oficial, chamado `node-firebird-dev` que consegue contornar alguns problemas e ler esse tipo de blob. Porém esse pacote não recebe frequentes atualizações e pode trazer outros problemas . Habilite essa opção apenas se você tiver certeza do que está fazendo. 
 * `cors.allowServerToServerAccess`: *Opcional* Default `false`. Se `true` o cors permite que a API seja acessada diretamente de outros servidores ou de ferramentas REST como Postman, Insomnia, dentre outros.
 * `cors.whitelist`: Uma lista de domínios a partir de onde é permitido acessar a API. Há duasformas possíveis de uso:
 
