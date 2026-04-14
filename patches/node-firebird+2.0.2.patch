@@ -1,0 +1,26 @@
+diff --git a/node_modules/node-firebird/lib/wire/const.js b/node_modules/node-firebird/lib/wire/const.js
+index c166e2e..ca17296 100644
+--- a/node_modules/node-firebird/lib/wire/const.js
++++ b/node_modules/node-firebird/lib/wire/const.js
+@@ -12,7 +12,7 @@ const defaultOptions = {
+     DEFAULT_LOWERCASE_KEYS : false,
+     DEFAULT_PAGE_SIZE : 4096,
+     DEFAULT_SVC_NAME : 'service_mgr',
+-    DEFAULT_ENCODING : 'UTF8',
++    DEFAULT_ENCODING : process.env.NODE_FIREBIRD_ENCODING || 'UTF8',
+     DEFAULT_FETCHSIZE : 200,
+ };
+ 
+diff --git a/node_modules/node-firebird/lib/wire/eventConnection.js b/node_modules/node-firebird/lib/wire/eventConnection.js
+index c59d7d5..78b342e 100644
+--- a/node_modules/node-firebird/lib/wire/eventConnection.js
++++ b/node_modules/node-firebird/lib/wire/eventConnection.js
+@@ -1,7 +1,7 @@
+ const net = require('net');
+ const { XdrReader } = require('./serialize');
+-const DEFAULT_ENCODING = 'utf8';
+ const Const = require('./const');
++const { DEFAULT_ENCODING } = Const;
+ 
+ class EventConnection {
+     constructor(host, port, callback, db) {

@@ -13,6 +13,7 @@ Você também precisa criar as variáveis de ambiente com usuário e senha do se
 ```bash
 FIREBIRDAPI_USER: SYSDBA
 FIREBIRDAPI_PASSWORD: masterkey
+NODE_FIREBIRD_ENCODING: UTF8 # Caso o banco tenha codificação WIN1252 ou ISO-8859-1 use LATIN1 (suportado pelo node.js)
 ```
 
 
@@ -20,14 +21,23 @@ Você também precisa criar o arquivo `src/config.json` com a seguinte estrutura
 
 ```
 {
-    "connection": {
+  "connection": {
         "database": "C:/dados/database.fdb",
         "host": "127.0.0.1",
         "port": 3050,
         "pageSize": 4096,
 		"encoding": "UTF8",
 		"blobAsText": false 
-    },
+  },
+  transactionOptions {
+    "autoCommit": false,
+    "autoUndo": true,
+    "isolation": [15, 18] # Valor do array Firebird.ISOLATION_READ_COMMITTED
+    "ignoreLimbo": false,
+    "readOnly": false,
+    "wait": true,
+    "waitTimeout": 0, 
+  },
 	"textEncoding": "WIN1252",
 	"secret": "minha_chave_secreta",
     "cors": {

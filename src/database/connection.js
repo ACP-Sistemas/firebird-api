@@ -1,10 +1,11 @@
-'use strict'; 
+'use strict';
 
-const { connection, textEncoding } = require('../config.json');
+const { connection, textEncoding, transactionOptions } = require('../config.json');
 
 const Firebird = require('node-firebird');
+const iconv = require('iconv-lite');
 
-const { database, host, port, pageSize = 4096, encoding = 'UTF8', blobAsText = false} = connection;
+const { database, host, port, pageSize = 4096, encoding = 'UTF8', blobAsText = false } = connection;
 const role = null;
 
 module.exports = {
@@ -12,18 +13,20 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await doConnection();
-    
+
                 db.query(sql, async (error, results) => {
                     if (error) {
                         reject(error);
                     } else {
                         const readableResults = await readResults(results);
-                        
+
                         resolve(readableResults);
                         db.detach();
                     }
-                });
-            } catch(error) {
+                },
+                    transactionOptions
+                );
+            } catch (error) {
                 reject(error);
             }
         });
@@ -33,10 +36,10 @@ module.exports = {
 async function doConnection() {
     return new Promise((resolve, reject) => {
         try {
-            const user     = process.env.FIREBIRDAPI_USER;
+            const user = process.env.FIREBIRDAPI_USER;
             const password = process.env.FIREBIRDAPI_PASSWORD;
 
-            if(!user || !password) {
+            if (!user || !password) {
                 throw new Error('user and password required');
             }
 
@@ -57,28 +60,32 @@ async function doConnection() {
                     resolve(db);
                 }
             });
-        } catch(error) {
+        } catch (error) {
             reject(error);
         }
     });
 };
 
-async function readResults(results){
-    if(results) {
-        for(let i = 0; i < results.length; i++) {
+async function readResults(results) {
+    if (results) {
+        for (let i = 0; i < results.length; i++) {
             const record = results[i];
             const campos = Object.keys(record);
 
-            for(let j = 0; j < campos.length; j++) {
+            for (let j = 0; j < campos.length; j++) {
                 const campo = campos[j];
 
-                if(typeof record[campo] == 'function') {//BLOB
-                    const string = await readBlob(record[campo]);
-                    record[campo] = string || null;
+                // Read BLOBs
+                if (typeof record[campo] == 'function') {
+                    const bufferBlob = await readBlob(record[campo]);
+                    record[campo] = bufferBlob || null;
+                    continue;
                 }
 
-                if(record[campo] && record[campo].buffer) {
-                    record[campo] = record[campo].toString(textEncoding);
+                // Convert buffer or string fields
+                if (record[campo] && (typeof record[campo] === 'string' || record[campo].buffer)) {
+                    const bufferTexto = Buffer.from(record[campo], 'binary');
+                    record[campo] = iconv.decode(bufferTexto, textEncoding);
                 }
             }
         }
@@ -88,21 +95,18 @@ async function readResults(results){
 };
 
 async function readBlob(streaming) {
-    return new Promise((resolve, reject) => {
-        streaming(function(err, name, event) {
-            if (err) { 
-                resolve(null); 
-                return;
-            }
+    return new Promise((resolve) => {
+        streaming(function (err, name, event) {
+            if (err) return resolve(null);
 
-            let string = '';
+            let chunks = [];
 
-            event.on('data', function(chunk) {
-                string += chunk.toString();
+            event.on('data', function (chunk) {
+                chunks.push(chunk);
             });
 
-            event.on('end', function() {
-                resolve(string);
+            event.on('end', function () {
+                resolve(Buffer.concat(chunks));
             });
         });
     });
