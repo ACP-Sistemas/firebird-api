@@ -1,3 +1,15 @@
+diff --git a/node_modules/node-firebird/lib/wire/connection.js b/node_modules/node-firebird/lib/wire/connection.js
+index 290e4f9..33569f1 100644
+--- a/node_modules/node-firebird/lib/wire/connection.js
++++ b/node_modules/node-firebird/lib/wire/connection.js
+@@ -1644,6 +1644,7 @@ function decodeResponse(data, callback, cnx, lowercase_keys, cb) {
+                                 } else {
+                                     value = fetch_blob_async(statement, value, key, row);
+                                 }
++                                value.subType = item.subType;  // Adiciona o subtipo ao objeto da função
+                             }
+ 
+                             data.frow[key] = value;
 diff --git a/node_modules/node-firebird/lib/wire/const.js b/node_modules/node-firebird/lib/wire/const.js
 index c166e2e..ca17296 100644
 --- a/node_modules/node-firebird/lib/wire/const.js

@@ -77,8 +77,12 @@ async function readResults(results) {
 
                 // Read BLOBs
                 if (typeof record[campo] == 'function') {
+                    const subType = record[campo].subType;
                     const bufferBlob = await readBlob(record[campo]);
-                    record[campo] = bufferBlob || null;
+                    if (subType)
+                        record[campo] = iconv.decode(bufferBlob, textEncoding) || null;
+                    else
+                        record[campo] = bufferBlob || null;
                     continue;
                 }
 
