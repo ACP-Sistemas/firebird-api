@@ -13,6 +13,7 @@ Você também precisa criar as variáveis de ambiente com usuário e senha do se
 ```bash
 FIREBIRDAPI_USER: SYSDBA
 FIREBIRDAPI_PASSWORD: masterkey
+FIREBIRDAPI_READONLY: true # Permite apenas uma consulta select por chamada da API
 NODE_FIREBIRD_ENCODING: UTF8 # Caso o banco tenha codificação WIN1252 ou ISO-8859-1 use LATIN1 (suportado pelo node.js)
 ```
 
