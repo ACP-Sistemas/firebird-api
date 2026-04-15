@@ -40,7 +40,7 @@ async function doConnection() {
             const password = process.env.FIREBIRDAPI_PASSWORD;
 
             if (!user || !password) {
-                throw new Error('user and password required');
+                throw new Error('User and password required');
             }
 
             Firebird.attach({
