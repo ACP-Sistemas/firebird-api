@@ -1,7 +1,10 @@
 {
-  "name": "firebird-api",
+  "name": "@ACP-Sistemas/firebird-api",
   "version": "1.0.2",
   "description": "A Firebird API Endpoint",
+  "repository": {
+    "url": "https://github.com/ACP-Sistemas/firebird-api.git"
+  },
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -9,7 +12,7 @@
     "postinstall": "patch-package"
   },
   "publishConfig": {
-    "@ACP-Sistemas:registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   },
   "keywords": [
     "firebird",
