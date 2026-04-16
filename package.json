@@ -8,13 +8,19 @@
     "dev": "nodemon src/index.js",
     "postinstall": "patch-package"
   },
+  "publishConfig": {
+    "@Gustavo-V-F:registry": "https://npm.pkg.github.com"
+  },
   "keywords": [
     "firebird",
     "nodejs",
     "api",
     "rest"
   ],
-  "author": "Albanir Neves https://github.com/albanirneves",
+  "author": "Gustavo Vianna França https://github.com/Gustavo-V-F",
+  "contributors": [
+    "Albanir Neves https://github.com/albanirneves"
+  ],
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.6",
