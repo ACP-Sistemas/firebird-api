@@ -9,7 +9,7 @@
     "postinstall": "patch-package"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "@ACP-Sistemas:registry": "https://npm.pkg.github.com"
   },
   "keywords": [
     "firebird",
