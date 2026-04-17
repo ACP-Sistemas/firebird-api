@@ -1,6 +1,6 @@
 'use strict';
 
-const { connection, textEncoding, transactionOptions } = require('../config.json');
+const { connection, textEncoding, transactionOptions = {} } = require('../config.json');
 
 const Firebird = require('node-firebird');
 const iconv = require('iconv-lite');
