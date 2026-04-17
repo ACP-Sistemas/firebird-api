@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-if [ -n "$container" ]; then
+if [ -n "$container" ] && [ "$0" != "$APP_PATH/entrypoint.sh" ]; then
     CMD="$0 $@"
 else
     CMD="$@"
