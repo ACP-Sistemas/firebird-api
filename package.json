@@ -1,6 +1,6 @@
 {
   "name": "@ACP-Sistemas/firebird-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Firebird API Endpoint",
   "repository": {
     "url": "https://github.com/ACP-Sistemas/firebird-api.git"
