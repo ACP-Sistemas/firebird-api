@@ -30,6 +30,4 @@ cat > "$FIREBIRDAPI_PATH/src/config.json" <<EOF
 }
 EOF
 
-echo "$@"
-
 exec "$@"
