@@ -40,5 +40,5 @@ WORKDIR "$FIREBIRDAPI_PATH"
 RUN npm install
 COPY "./entrypoint.sh" "$APP_PATH"
 RUN chmod +x "$APP_PATH/entrypoint.sh"
-ENTRYPOINT ["sh", "-c", "exec $APP_PATH/entrypoint.sh $0 $@"]
+ENTRYPOINT $APP_PATH/entrypoint.sh $0 $@
 CMD ["npm", "start"]
