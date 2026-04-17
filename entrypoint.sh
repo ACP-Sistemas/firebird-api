@@ -1,6 +1,13 @@
 #!/bin/sh
 set -e
 
+if [ -n "$container" ]; then
+    CMD="$0 $@"
+else
+    CMD="$@"
+fi
+
+
 if [ -z "$FIREBIRD_DB_PATH" ]; then
     echo "ERRO: Firebird DB path environment variable not declared!"
     exit 1
@@ -30,4 +37,4 @@ cat > "$FIREBIRDAPI_PATH/src/config.json" <<EOF
 }
 EOF
 
-exec "$@"
+exec $CMD
