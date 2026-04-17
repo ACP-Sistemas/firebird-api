@@ -1,12 +1,7 @@
 #!/bin/sh
 set -e
 
-if [ -n "$container" ] && [ "$0" != "$APP_PATH/entrypoint.sh" ]; then
-    CMD="$0 $@"
-else
-    CMD="$@"
-fi
-
+CMD="$(echo "$0 $@" | awk '{print $(NF-1), $NF}')"
 
 if [ -z "$FIREBIRD_DB_PATH" ]; then
     echo "ERRO: Firebird DB path environment variable not declared!"
