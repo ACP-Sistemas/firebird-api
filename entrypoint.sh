@@ -1,12 +1,5 @@
 #!/bin/sh
 set -e
-set -x
-
-if echo "$@" | grep -q "jelinit"; then
-    CMD="$(echo "$@" | awk '{print $(NF-1), $NF}')"
-else
-    CMD="$0 $@"
-fi
 
 if [ -z "$FIREBIRD_DB_PATH" ]; then
     echo "ERRO: Firebird DB path environment variable not declared!"
@@ -18,7 +11,7 @@ if [ -z "$FIREBIRDAPI_SECRET" ]; then
     exit 1
 fi
 
-cat > "$FIREBIRDAPI_PATH/src/config.json" <<EOF
+cat > "/app/firebird-api/src/config.json" <<EOF
 {
   "connection": {
     "database": "$FIREBIRD_DB_PATH",
@@ -37,4 +30,4 @@ cat > "$FIREBIRDAPI_PATH/src/config.json" <<EOF
 }
 EOF
 
-exec $CMD
+exec "$@"

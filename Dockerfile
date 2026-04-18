@@ -27,18 +27,16 @@ ENV FIREBIRD_DB_HOST=$FIREBIRD_DB_HOST
 ENV FIREBIRD_DB_PORT=$FIREBIRD_DB_PORT
 ENV FIREBIRD_DB_PAGESIZE=$FIREBIRD_DB_PAGESIZE
 ENV FIREBIRD_DB_ENCODING=$FIREBIRD_DB_ENCODING
-ENV APP_PATH=/app
-ENV FIREBIRDAPI_PATH=$APP_PATH/firebird-api
 
 EXPOSE $PORT
 
 RUN apk update && apk add git bash
-RUN mkdir "$APP_PATH"
-WORKDIR $APP_PATH
+RUN mkdir /app
+WORKDIR /app
 RUN git clone -c advice.detachedHead=false --single-branch -b $FIREBIRDAPI_VERSION https://github.com/ACP-Sistemas/firebird-api
-WORKDIR "$FIREBIRDAPI_PATH"
+WORKDIR /app/firebird-api
 RUN npm install
-COPY "./entrypoint.sh" "$APP_PATH"
-RUN chmod +x "$APP_PATH/entrypoint.sh"
-ENTRYPOINT $APP_PATH/entrypoint.sh $0 $@
+COPY "./entrypoint.sh" "/app"
+RUN chmod +x "/app/entrypoint.sh"
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["npm", "start"]
