@@ -2,8 +2,8 @@
 set -e
 set -x
 
-if [ "$#" -ge 2 ]; then
-    CMD="$@"
+if echo "$@" | grep -q "jelinit"; then
+    CMD="$(echo "$@" | awk '{print $(NF-1), $NF}')"
 else
     CMD="$0 $@"
 fi
