@@ -1,7 +1,11 @@
 #!/bin/sh
 set -e
 
-CMD="$(echo "$0 $@" | awk '{print $(NF-1), $NF}')"
+if [ "$#" -ge 2 ]; then
+    CMD="$@"
+else
+    CMD="$0 $@"
+fi
 
 if [ -z "$FIREBIRD_DB_PATH" ]; then
     echo "ERRO: Firebird DB path environment variable not declared!"
