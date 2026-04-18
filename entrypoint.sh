@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+set -x
 
 if [ "$#" -ge 2 ]; then
     CMD="$@"
